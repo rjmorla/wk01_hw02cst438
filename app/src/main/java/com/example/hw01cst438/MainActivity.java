@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
     Button login;
     EditText username, password;
     private TextView textViewResult;
-    static HashMap<Integer, ArrayList<String>> credentials = loadCredentials();
+    static HashMap<Integer, ArrayList<String>> credential_map = preloadCredentials();
 
-    private static HashMap<Integer, ArrayList<String>> loadCredentials() {
+    private static HashMap<Integer, ArrayList<String>> preloadCredentials() {
         ArrayList<String> admin = new ArrayList<String>();
         admin.add("admin");
         admin.add("admin");
@@ -38,10 +38,17 @@ public class MainActivity extends AppCompatActivity {
         admin2.add("admin2");
         admin2.add("admin2");
         admin2.add("2");
+
+        ArrayList<String> admin3 = new ArrayList<String>();
+        admin3.add("admin3");
+        admin3.add("admin3");
+        admin3.add("3");
+
         HashMap<Integer, ArrayList<String>> result = new HashMap<Integer, ArrayList<String>>();
 
         result.put(1, admin);
         result.put(2, admin2);
+        result.put(3, admin3);
         return result;
     }
 
@@ -71,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         boolean valid_username = false;
         boolean valid_password = false;
 
-        Iterator i = credentials.entrySet().iterator();
+        Iterator i = credential_map.entrySet().iterator();
         while (i.hasNext()) {
             Map.Entry mapElement = (Map.Entry) i.next();
             ArrayList<String> credential = (ArrayList<String>) mapElement.getValue();
@@ -81,10 +88,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (username.equals(user) && pw.equals(pass)) {
                 valid_username = true;
+            }
+
+            if (pw.equals(pass)) {
                 valid_password = true;
             }
+
             if (valid_username && valid_password) {
-                Toast.makeText(this, "welcome it worked", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Welcome " + username + "#" + uId , Toast.LENGTH_LONG).show();
                 setContentView(R.layout.post);
 
                 textViewResult = findViewById(R.id.textViewPost);
@@ -127,18 +138,27 @@ public class MainActivity extends AppCompatActivity {
                         textViewResult.setText(t.getMessage());
                     }
                 });
+                break;
             }
         }
+
+        //Messages for empty, incomplete, or incorrect fields
         if (user.isEmpty() && pass.isEmpty()) {
             Toast.makeText(this, "Please enter a username and password", Toast.LENGTH_LONG).show();
+            username.setError("Please enter a username");
+            password.setError("Please enter a password");
         } else if(user.isEmpty()){
             Toast.makeText(this, "Please enter a username", Toast.LENGTH_LONG).show();
+            username.setError("Please enter a username");
         } else if(pass.isEmpty()){
             Toast.makeText(this, "Please enter a password", Toast.LENGTH_LONG).show();
-        } else if (!valid_password) {
-            Toast.makeText(this, "Incorrect password", Toast.LENGTH_LONG).show();
+            password.setError("Please enter a password");
         } else if (!valid_username) {
             Toast.makeText(this, "Username not found", Toast.LENGTH_LONG).show();
+            username.setError("Your username was not found");
+        } else if (!valid_password) {
+            Toast.makeText(this, "Incorrect password", Toast.LENGTH_LONG).show();
+            password.setError("Your password is incorrect");
         }
     }
 }
