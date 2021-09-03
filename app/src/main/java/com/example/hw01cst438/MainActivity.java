@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                     if (!response.isSuccessful()) {
                         textViewResult.setText("Code: " + response.code());
-//                        textViewResult.append("Welcome " + credential.get(0) + " UserId#" + credential.get(2) + "\n\n");
+                        textViewResult.append("Welcome " + credential.get(0) + " UserId#" + credential.get(2) + "\n\n");
                     }
                     List<Post> posts = response.body();
                     for (Post post : posts) {
