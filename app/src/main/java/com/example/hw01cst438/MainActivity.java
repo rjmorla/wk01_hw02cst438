@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Welcome " + credential.get(0) + "#" + credential.get(2), Toast.LENGTH_LONG).show();
             setContentView(R.layout.post);
             textViewResult = findViewById(R.id.textViewPost);
+            textViewResult.append("Welcome " + credential.get(0) + " UserId#" + credential.get(2) + "\n\n");
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://jsonplaceholder.typicode.com/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -132,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                     if (!response.isSuccessful()) {
                         textViewResult.setText("Code: " + response.code());
-                        textViewResult.append("Welcome " + credential.get(0) + " UserId#" + credential.get(2) + "\n\n");
                     }
                     List<Post> posts = response.body();
                     for (Post post : posts) {
